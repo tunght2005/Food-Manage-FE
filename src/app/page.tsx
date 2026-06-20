@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import ClientComponent from "./ClientComponent";
 
 export default function Home() {
   return (
@@ -61,6 +62,7 @@ export default function Home() {
           </a>
 
           <Button>Test Shadcn UI</Button>
+          <ClientComponent />
         </div>
       </main>
     </div>
