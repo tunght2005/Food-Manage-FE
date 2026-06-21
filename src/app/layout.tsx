@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto, Oxanium } from "next/font/google";
 console.log(envConfig);
 import "./globals.css";
-import envConfig from "../../config";
-import { cn } from "@/lib/utils";
+import envConfig from "../config";
+import { cn } from "@/src/lib/utils";
 
 const oxaniumHeading = Oxanium({
   subsets: ["latin"],
