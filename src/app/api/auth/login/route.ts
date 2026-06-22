@@ -1,8 +1,8 @@
-import authApiRequest from '@/src/apiRequests/auth'
-import { LoginBodyType } from '@/src/schemaValidations/auth.schema'
+import authApiRequest from '@/apiRequests/auth'
+import { LoginBodyType } from '@/schemaValidations/auth.schema'
 import { cookies } from 'next/headers'
 import jwt from 'jsonwebtoken'
-import { HttpError } from '@/src/lib/https'
+import { HttpError } from '@/lib/https'
 
 export async function POST(request: Request) {
   const body = (await request.json()) as LoginBodyType
