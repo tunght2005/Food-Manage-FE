@@ -10,6 +10,7 @@ import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
 import { useLoginMutation } from '@/queries/useAuth'
 import { toast } from 'sonner'
 import { handleErrorApi } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
   const loginMutation = useLoginMutation()
@@ -20,7 +21,7 @@ export default function LoginForm() {
       password: ''
     }
   })
-
+  const router = useRouter()
   const onSubmit = async (data: LoginBodyType) => {
     // Khi nhấn submit thì React hook form sẽ validate cái form bằng zod schema ở client trước
     // Nếu không pass qua vòng này thì sẽ không gọi api
@@ -28,6 +29,7 @@ export default function LoginForm() {
     try {
       const result = await loginMutation.mutateAsync(data)
       toast.success(result.payload.message)
+      router.push('/manage/dashboard')
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       handleErrorApi({
