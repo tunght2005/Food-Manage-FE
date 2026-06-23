@@ -7,8 +7,12 @@ import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
 import { LoginBody, LoginBodyType } from '@/schemaValidations/auth.schema'
+import { useLoginMutation } from '@/queries/useAuth'
+import { toast } from 'sonner'
+import { handleErrorApi } from '@/lib/utils'
 
 export default function LoginForm() {
+  const loginMutation = useLoginMutation()
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -16,6 +20,22 @@ export default function LoginForm() {
       password: ''
     }
   })
+
+  const onSubmit = async (data: LoginBodyType) => {
+    // Khi nhấn submit thì React hook form sẽ validate cái form bằng zod schema ở client trước
+    // Nếu không pass qua vòng này thì sẽ không gọi api
+    if (loginMutation.isPending) return
+    try {
+      const result = await loginMutation.mutateAsync(data)
+      toast.success(result.payload.message)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      handleErrorApi({
+        error,
+        setError: form.setError
+      })
+    }
+  }
 
   return (
     <Card className='mx-auto w-full max-w-90'>
@@ -25,7 +45,13 @@ export default function LoginForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className='space-y-2 max-w-150 shrink-0 w-full' noValidate>
+          <form
+            className='space-y-2 max-w-150 shrink-0 w-full'
+            noValidate
+            onSubmit={form.handleSubmit(onSubmit, (err) => {
+              console.log(err)
+            })}
+          >
             <div className='grid gap-4'>
               <FormField
                 control={form.control}

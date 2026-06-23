@@ -4,6 +4,7 @@ import './globals.css'
 import { cn } from '@/lib/utils'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
+import AppProvider from '@/components/app-provider'
 
 const oxaniumHeading = Oxanium({
   subsets: ['latin'],
@@ -33,10 +34,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={cn('h-full antialiased', roboto.variable, geistMono.variable, oxaniumHeading.variable, 'font-sans')}
     >
       <body className='min-h-full flex flex-col'>
-        <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <AppProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </AppProvider>
       </body>
     </html>
   )
